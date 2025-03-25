@@ -1,8 +1,9 @@
 import streamlit as st
+st.set_page_config(page_title="Executive Summary Generator", layout="wide")
 import pandas as pd
 from openai import AzureOpenAI
 from io import BytesIO
-st.set_page_config(page_title="Executive Summary Generator", layout="wide")
+
 # --- Password Protection ---
 # --- Password Protection ---
 if "authenticated" not in st.session_state:
