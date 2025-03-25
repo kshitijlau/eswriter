@@ -1,10 +1,10 @@
 import streamlit as st
 st.set_page_config(page_title="Executive Summary Generator", layout="wide")
+
 import pandas as pd
 from openai import AzureOpenAI
 from io import BytesIO
 
-# --- Password Protection ---
 # --- Password Protection ---
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
@@ -12,7 +12,7 @@ if "authenticated" not in st.session_state:
 if not st.session_state["authenticated"]:
     st.title("🔐 Executive Summary Generator (Protected)")
     pwd = st.text_input("Enter access password", type="password")
-    
+
     if pwd:
         if pwd == st.secrets["auth"]["password"]:
             st.success("Access granted.")
@@ -20,7 +20,6 @@ if not st.session_state["authenticated"]:
         else:
             st.error("Incorrect password. Please try again.")
         st.stop()
-
 
 # --- Azure OpenAI Setup ---
 client = AzureOpenAI(
@@ -60,7 +59,6 @@ def generate_summary(thematic_feedback_text):
     return response.choices[0].message.content
 
 # --- Streamlit UI ---
-st.set_page_config(page_title="Executive Summary Generator", layout="wide")
 st.title("📝 Executive Summary Generator from SSC Feedback")
 
 uploaded_file = st.file_uploader("Upload SSC Feedback Excel", type=["xlsx"])
