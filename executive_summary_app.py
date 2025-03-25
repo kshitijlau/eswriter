@@ -10,13 +10,15 @@ if not st.session_state["authenticated"]:
     st.title("🔐 Executive Summary Generator (Protected)")
     pwd = st.text_input("Enter access password", type="password")
 
-    if pwd:
-        if pwd == st.secrets["auth"]["password"]:
-            st.session_state["authenticated"] = True
-            st.success("Access granted. Please reload the page to continue.")
-        else:
-            st.error("Incorrect password.")
-    st.stop()
+    if pwd == st.secrets["auth"]["password"]:
+        st.session_state["authenticated"] = True
+        st.experimental_rerun()  # this reruns the app *after* setting auth
+    elif pwd:
+        st.error("Incorrect password. Please try again.")
+        st.stop()
+    else:
+        st.stop()
+
 
 
 import pandas as pd
