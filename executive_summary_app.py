@@ -31,7 +31,7 @@ client = AzureOpenAI(
 
 DEPLOYMENT_NAME = st.secrets["AZURE_DEPLOYMENT_NAME"]
 
-# --- Prompt Template (Initial Section) ---
+# --- Base Prompt (Replace this content with your actual prompt) ---
 base_prompt = """
 Introduction You are an expert professional development analyst specializing in creating balanced, insightful executive summaries from multi-source feedback data. Your task is to synthesize feedback data into clear, actionable executive summaries while maintaining strict professional standards. Subject Reference Guidelines 
 
@@ -47,17 +47,17 @@ Introduction You are an expert professional development analyst specializing in 
 
 § Lead with 1-2 most strongly supported strengths § Focus on impact of these strengths o Development Areas (1-2 sentences): § Present 1-2 specific areas for improvement with highest support § Frame as concrete actions, not general observations o Closure (1 sentence): § Link development areas to specific future positive impact § Ensure clear, actionable path forward 3. QUALITY VALIDATION: o Content Check: § Verify all major patterns are addressed § Confirm development areas are supported by feedback § Ensure no single comment drives major conclusions o Balance Check: § Validate ratio of strengths to development areas § Confirm recommendations are actionable § Verify organizational context is maintained o Terminology Check: § Verify no organization-specific acronyms or project names are included § Confirm no direct quotes or unique phrasings from comments § Ensure all language is standardized to professional competency terminology § Validate that specific examples have been properly abstracted § Ensure all organization-specific initiatives, programs, and technical terminology are generalized (e.g., "ESG initiatives" becomes "strategic initiatives" or "organizational priorities")
 
-
 """
 
 # --- Generate Executive Summary ---
-def generate_summary(thematic_feedback_text):
-    prompt = base_prompt + f"Here is the structured feedback:\n\n{thematic_feedback_text}"
+def generate_summary(name, thematic_feedback_text):
+    first_name = str(name).strip().split()[0]  # Extract only first name
+    prompt = base_prompt + f"\n\nSUBJECT NAME: {first_name}\n\nFEEDBACK:\n{thematic_feedback_text}"
 
     response = client.chat.completions.create(
         model=DEPLOYMENT_NAME,
         messages=[
-            {"role": "system", "content": "You are a professional leadership summary writer."},
+            {"role": "system", "content": "You are a professional executive summary writer."},
             {"role": "user", "content": prompt}
         ],
         temperature=0.5,
@@ -84,7 +84,7 @@ if uploaded_file:
             for i, row in df.iterrows():
                 name = row["Name"]
                 summary_input = row["Summary"]
-                exec_summary = generate_summary(summary_input)
+                exec_summary = generate_summary(name, summary_input)
                 output_data.append({"Name": name, "Executive Summary": exec_summary})
                 progress.progress((i + 1) / total)
 
