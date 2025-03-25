@@ -4,19 +4,21 @@ from openai import AzureOpenAI
 from io import BytesIO
 
 # --- Password Protection ---
+# --- Password Protection ---
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
 if not st.session_state["authenticated"]:
     st.title("🔐 Executive Summary Generator (Protected)")
     pwd = st.text_input("Enter access password", type="password")
-    if pwd == st.secrets["auth"]["password"]:
-        st.session_state["authenticated"] = True
-        st.success("Access granted. You may now use the application.")
-        st.experimental_rerun()
-    elif pwd:
-        st.error("Incorrect password. Please try again.")
-    st.stop()
+    
+    if pwd:
+        if pwd == st.secrets["auth"]["password"]:
+            st.success("Access granted.")
+            st.session_state["authenticated"] = True
+        else:
+            st.error("Incorrect password. Please try again.")
+        st.stop()
 
 
 # --- Azure OpenAI Setup ---
