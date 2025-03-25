@@ -1,10 +1,6 @@
 import streamlit as st
 st.set_page_config(page_title="Executive Summary Generator", layout="wide")
 
-import pandas as pd
-from openai import AzureOpenAI
-from io import BytesIO
-
 # --- Password Protection ---
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
@@ -18,6 +14,12 @@ if not st.session_state["authenticated"]:
     elif pwd:
         st.error("Incorrect password. Please try again.")
         st.stop()
+
+import pandas as pd
+from openai import AzureOpenAI
+from io import BytesIO
+
+
 
 # --- Azure OpenAI Setup ---
 client = AzureOpenAI(
