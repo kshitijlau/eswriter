@@ -1,25 +1,25 @@
 import streamlit as st
 st.set_page_config(page_title="Executive Summary Generator", layout="wide")
 
-import pandas as pd
-from openai import AzureOpenAI
-from io import BytesIO
-
 # --- Password Protection ---
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
 if not st.session_state["authenticated"]:
-    st.title("🔐 Executive Summary Generator (Protected)")
     pwd = st.text_input("Enter access password", type="password")
+    
+    if pwd == st.secrets["auth"]["password"]:
+        st.session_state["authenticated"] = True
+        st.experimental_rerun()  # rerun after setting state
+    elif pwd:
+        st.error("Incorrect password. Please try again.")
 
-    if pwd:
-        if pwd == st.secrets["auth"]["password"]:
-            st.success("Access granted.")
-            st.session_state["authenticated"] = True
-        else:
-            st.error("Incorrect password. Please try again.")
-        st.stop()
+    st.stop()  # 🔒 stop the rest of the app from running
+
+
+import pandas as pd
+from openai import AzureOpenAI
+from io import BytesIO
 
 # --- Azure OpenAI Setup ---
 client = AzureOpenAI(
