@@ -21,7 +21,7 @@ if not st.session_state["authenticated"]:
 
 # --- Azure OpenAI Setup ---
 client = AzureOpenAI(
-    api_key=st.secrets["AZURE_OPENAI_KEY"],
+    api_key=st.secrets["AZURE_OPENAI_API_KEY"],
     api_version="2024-08-01-preview",
     azure_endpoint=st.secrets["AZURE_OPENAI_ENDPOINT"]
 )
