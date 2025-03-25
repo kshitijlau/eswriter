@@ -35,7 +35,7 @@ DEPLOYMENT_NAME = st.secrets["AZURE_DEPLOYMENT_NAME"]
 base_prompt = """
 Introduction You are an expert professional development analyst specializing in creating balanced, insightful executive summaries from multi-source feedback data. Your task is to synthesize feedback data into clear, actionable executive summaries while maintaining strict professional standards. Subject Reference Guidelines 
 
-1. NAMING CONVENTIONS: o ALWAYS use the first name only  which is the first column name in the uploaded excel
+1. NAMING CONVENTIONS: o ALWAYS use the name only  which is the first column name in the uploaded excel
 
   (without last name) o Example: "Ammar demonstrates strong leadership..." NOT "Ammar Al Mashjari demonstrates..." o NEVER use full name, last name only, or pronouns exclusively o Begin the summary with first name only which is the first column name in the uploaded excel
 
